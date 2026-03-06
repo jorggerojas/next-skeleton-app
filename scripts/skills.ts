@@ -42,7 +42,7 @@ function parseArgs(): SkillOptions {
 
   const folder = folderArg.split("=")[1];
   const message = messageArg.split("=")[1].replace(/^["']|["']$/g, "");
-  const name = nameArg?.split("=")[1] || folder;
+  const name = nameArg?.split("=")[1] || "SKILL.md";
 
   // Parse scope: --scope="hooks,stores" or --scope="[hooks,stores]"
   let scope: string[] | undefined;
@@ -241,10 +241,10 @@ async function updateSkillsReadme(skills: SkillInfo[]): Promise<void> {
 }
 
 async function updateAgentMd(skills: SkillInfo[]): Promise<void> {
-  const agentPath = "agent.md";
+  const agentPath = "AGENTS.md";
 
   if (!existsSync(agentPath)) {
-    console.warn("⚠ agent.md not found, skipping update");
+    console.warn("⚠ AGENTS.md not found, skipping update");
     return;
   }
 
@@ -263,7 +263,7 @@ async function updateAgentMd(skills: SkillInfo[]): Promise<void> {
   }
 
   await writeFile(agentPath, newContent, "utf-8");
-  console.log("✓ Updated agent.md with skills list");
+  console.log("✓ Updated AGENTS.md with skills list");
 }
 
 async function formatCode(): Promise<void> {
