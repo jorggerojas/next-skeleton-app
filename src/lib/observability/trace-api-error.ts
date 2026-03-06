@@ -32,6 +32,13 @@ export function shouldTraceApiError(
 }
 
 export function toError(error: unknown, fallbackMessage: string): Error {
+  if (axios.isAxiosError(error)) {
+    const msg =
+      error.response?.data?.errors ??
+      error.response?.data?.message ??
+      error.message;
+    return new Error(String(msg), { cause: error });
+  }
   if (error instanceof Error) return error;
   return new Error(fallbackMessage, { cause: error });
 }
@@ -49,12 +56,7 @@ export function traceApiError(
 ): void {
   if (!shouldTraceApiError(error, context, opts)) return;
 
-  const err = toError(
-    error,
-    axios.isAxiosError(error)
-      ? String(error.response?.data?.errors ?? error.message)
-      : "Unknown API error",
-  );
+  const err = toError(error, "Unknown API error");
 
   errorTracer.trace(err, context);
 }

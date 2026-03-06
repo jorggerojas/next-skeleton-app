@@ -42,7 +42,15 @@ function parseArgs(): SkillOptions {
 
   const folder = folderArg.split("=")[1];
   const message = messageArg.split("=")[1].replace(/^["']|["']$/g, "");
-  const name = nameArg?.split("=")[1] || "SKILL.md";
+
+  const nameArgValue = nameArg?.split("=")[1];
+  if (nameArgValue != null && nameArgValue !== "SKILL.md") {
+    console.error(
+      "Error: --name must be SKILL.md. getAllSkills() only indexes .cursor/skills/*/SKILL.md; custom names create unindexed files.",
+    );
+    process.exit(1);
+  }
+  const name = nameArgValue ?? "SKILL.md";
 
   // Parse scope: --scope="hooks,stores" or --scope="[hooks,stores]"
   let scope: string[] | undefined;

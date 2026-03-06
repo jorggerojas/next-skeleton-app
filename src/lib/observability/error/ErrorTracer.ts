@@ -29,8 +29,16 @@ function dedupKey(err: Error, ctx: Record<string, unknown>): string {
   return `${source}:${msg}:${stack}`;
 }
 
+function pruneStaleDedupEntries(): void {
+  const now = Date.now();
+  for (const [k, timestamp] of dedup.entries()) {
+    if (now - timestamp >= DEDUP_MS) dedup.delete(k);
+  }
+}
+
 function isDeduped(key: string): boolean {
   const now = Date.now();
+  pruneStaleDedupEntries();
   const last = dedup.get(key);
   if (last != null && now - last < DEDUP_MS) return true;
   dedup.set(key, now);
@@ -107,10 +115,14 @@ class ErrorTracer implements ErrorTracerType {
 
   setUser(userID: UserID | null): void {
     if (!userID) {
-      console.log("User: null");
+      this.adapters.forEach((a) => {
+        a.setUser(null);
+      });
       return;
     }
-    console.log(`User: ${userID}`);
+    this.adapters.forEach((a) => {
+      a.setUser(userID);
+    });
   }
 }
 

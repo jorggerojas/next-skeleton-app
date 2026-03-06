@@ -7,11 +7,11 @@ const DEV_FEATURE_FLAGS = {
 };
 
 export function useAppFeatures() {
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = process.env.NODE_ENV === "development";
 
   const { value: ccFeatureA, loading: featureALoading } = useFeatureFlag(
     "feature-a",
-    true,
+    false,
   );
 
   return {

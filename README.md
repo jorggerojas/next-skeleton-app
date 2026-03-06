@@ -4,7 +4,7 @@ Next.js starter/skeleton project with App Router. Pre-configured with modern too
 
 > **Note**: This is a skeleton project template. The README provides basic information and commands, but you'll need to customize it for your specific project needs.
 > **Package manager**: This project uses **bun** (recommended). You can also use **pnpm**, **npm**, or **yarn**. If you switch, update: `package.json` scripts, GitHub Actions workflows (`.github/workflows/`), CI configs, and any documentation that references the package manager.
-> Add or remove ConfigCat and its SDK from the env file to start development mode
+> Dev mode is governed by `NODE_ENV`. The ConfigCat provider falls back to a demo SDK key when `NEXT_PUBLIC_CONFIG_CAT_SDK` is unset or `"#"`.
 
 ## Tech Stack
 

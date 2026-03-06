@@ -19,44 +19,41 @@ function getUserID(): UserID {
   return id;
 }
 
+let userAttributionSet = false;
+
 function FeatureFlagsManager({ children }: { children: React.ReactNode }) {
   const client = useConfigCatClient();
   const [isReady, setIsReady] = useState(false);
+
+  if (typeof window !== "undefined" && !userAttributionSet) {
+    userAttributionSet = true;
+    errorTracer.setUser(getUserID());
+  }
 
   useEffect(() => {
     if (isReady) return;
 
     const userID = getUserID();
-
-    errorTracer.setUser(userID);
-
     client.setDefaultUser({
       identifier: userID,
     });
 
-    client.forceRefreshAsync().then(() => {
-      setIsReady(true);
-    });
+    client.forceRefreshAsync().finally(() => setIsReady(true));
   }, [client, isReady]);
 
   return <>{children}</>;
 }
-
-const DEMO_SDK_KEY = "PKDVCLf-Hq-h-kCzMp-L7Q/PsyV3ZN-Znz3LqKy7Bew";
 
 export function FeatureFlagsProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const sdkKey =
-    process.env.NEXT_PUBLIC_CONFIG_CAT_SDK &&
-    process.env.NEXT_PUBLIC_CONFIG_CAT_SDK !== "#"
-      ? process.env.NEXT_PUBLIC_CONFIG_CAT_SDK
-      : DEMO_SDK_KEY;
-
   return (
-    <ConfigCatProvider sdkKey={sdkKey} pollingMode={PollingMode.ManualPoll}>
+    <ConfigCatProvider
+      sdkKey={process.env.NEXT_PUBLIC_CONFIG_CAT_SDK as string}
+      pollingMode={PollingMode.ManualPoll}
+    >
       <FeatureFlagsManager>{children}</FeatureFlagsManager>
     </ConfigCatProvider>
   );

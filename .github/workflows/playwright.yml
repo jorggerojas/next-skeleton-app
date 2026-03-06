@@ -2,6 +2,13 @@ name: Playwright Tests
 on:
   push:
     branches: [main, develop]
+    paths:
+      - ".github/workflows/playwright.yml"
+      - "src/**"
+      - "e2e/**"
+      - "playwright.config.*"
+      - "package.json"
+      - "bun.lock"
   pull_request:
     branches: [main, develop]
     paths:
@@ -26,7 +33,7 @@ jobs:
         run: bun run build
       - name: Get Playwright version
         id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(bun pm ls @playwright/test --depth=0 2>/dev/null | grep @playwright/test | awk '{print $NF}')" >> $GITHUB_OUTPUT
+        run: echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies["@playwright/test"]' package.json)" >> $GITHUB_OUTPUT
       - name: Cache Playwright Chromium
         uses: actions/cache@v5
         id: playwright-cache
@@ -35,8 +42,8 @@ jobs:
           key: playwright-chromium-${{ runner.os }}-${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }}
       - name: Install Playwright Chromium and deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: bun exec playwright install chromium --with-deps
+        run: bunx playwright install chromium --with-deps
       - name: Run Playwright tests
-        run: bun run test:e2e
+        run: bun run test:e2e -- --project=chromium
         env:
           CI: true

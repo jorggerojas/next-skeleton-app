@@ -35,10 +35,14 @@ export default class ErrorBoundary extends Component<
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     this.setState({ errorInfo });
-    errorTracer.trace(error, {
-      source: "ErrorBoundary",
-      componentStack: errorInfo.componentStack,
-    });
+    try {
+      errorTracer.trace(error, {
+        source: "ErrorBoundary",
+        componentStack: errorInfo.componentStack,
+      });
+    } catch (tracerError) {
+      console.error("ErrorTracer failed in ErrorBoundary:", tracerError);
+    }
   }
 
   handleReset = (): void => {

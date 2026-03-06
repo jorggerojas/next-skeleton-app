@@ -31,9 +31,22 @@ src/lib/serializers/
 // src/lib/serializers/user-serializer.ts
 import type { User, CreateUserBody, UpdateUserBody } from "@/types/user";
 
+export interface ExternalUserDTO {
+  _id: string;
+  fullName: string;
+  emailAddress: string;
+  userRole: string;
+}
+
+export interface CreateUserDTO {
+  fullName: string;
+  emailAddress: string;
+  userRole: string;
+}
+
 const serializeRole = (role: User["role"]): string => role.toLowerCase();
 
-export const serializeUser = (user: User): Record<string, unknown> => {
+export const serializeUser = (user: User): ExternalUserDTO => {
   return {
     _id: user.id,
     fullName: user.name,
@@ -42,7 +55,7 @@ export const serializeUser = (user: User): Record<string, unknown> => {
   };
 };
 
-export const serializeCreateUser = (data: CreateUserBody): Record<string, unknown> => {
+export const serializeCreateUser = (data: CreateUserBody): CreateUserDTO => {
   return {
     fullName: data.name,
     emailAddress: data.email,

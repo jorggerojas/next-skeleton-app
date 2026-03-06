@@ -87,7 +87,7 @@ const stringSchema = z.object({
   // One of specific values
   role: z.enum(["admin", "user", "guest"]),
 
-  // Trim whitespace (Zod trims by default for email/url)
+  // Trim whitespace explicitly with .trim() where needed; Zod's .email()/.url() do not auto-trim
   name: z.string().trim().min(1),
 });
 ```
