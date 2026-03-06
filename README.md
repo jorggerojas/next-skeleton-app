@@ -3,6 +3,8 @@
 Next.js starter/skeleton project with App Router. Pre-configured with modern tooling for linting, testing, and releases.
 
 > **Note**: This is a skeleton project template. The README provides basic information and commands, but you'll need to customize it for your specific project needs.
+> **Package manager**: This project uses **bun** (recommended). You can also use **pnpm**, **npm**, or **yarn**. If you switch, update: `package.json` scripts, GitHub Actions workflows (`.github/workflows/`), CI configs, and any documentation that references the package manager.
+> Add or remove ConfigCat and its SDK from the env file to start development mode
 
 ## Tech Stack
 
@@ -10,7 +12,7 @@ Next.js starter/skeleton project with App Router. Pre-configured with modern too
 - **React 19**
 - **TypeScript**
 - **Tailwind CSS 4**
-- **bun** (package manager)
+- **bun** (package manager; also supports pnpm, npm, yarn)
 
 ## Key Dependencies
 
@@ -178,7 +180,7 @@ git push origin develop
 
 ## Agent Skills
 
-This project includes Cursor agent skills to help with development. See [agent.md](./agent.md) for details.
+This project includes Cursor agent skills to help with development. See [AGENTS.md](./AGENTS.md) for details.
 
 The skills are located in `.cursor/skills/` and provide guidance for:
 
