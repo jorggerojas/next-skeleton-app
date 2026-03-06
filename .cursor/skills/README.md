@@ -48,10 +48,14 @@ Example: `components-ui` has `scope: [stores,testing]` because when creating com
 
 - **api-routes** (scope: app-router): Create and work with Next.js Route Handlers in src/app/api/. Use when creating API endpoints or handling HTTP requests.
 - **app-router** (scope: hooks, stores, components-ui): Work with Next.js App Router in src/app/. Use when creating pages, layouts, loading states, or error boundaries.
-- **components-ui** (scope: stores, testing): Create and organize UI components in src/components/. Use when creating new custom components.
+- **components-ui** (scope: stores, testing): Create and organize UI components in src/components/custom/. Use when creating new custom components.
+- **error-tracer** (scope: api-routes, components-ui, app-router, etc.): Trace all errors and send to the error tracer manager.
+- **feature-flags** (scope: components-ui, error-tracer, testing): Create or implement feature flags using ConfigCat.
 - **hierarchy** (scope: components-ui, hooks, stores, app-router): Define the components hierarchy and how to mix components.
 - **hooks** (scope: testing): Create and use custom React hooks in src/hooks/.
+- **normalizers** (scope: api-routes, serializers): Transform external API responses to internal data types.
 - **providers** (scope: stores): Create, configure, and centralize React providers in src/providers/.
-- **schemas** (scope: components-ui, hooks, app-router, testing): Define the form schemas with yup.
+- **schemas** (scope: components-ui, hooks, app-router, testing): Define the form schemas with Zod.
+- **serializers** (scope: api-routes, normalizers): Transform internal data types to external API format.
 - **stores** (scope: testing): Create and manage Zustand stores for UI state in src/stores/.
 - **testing**: Write and organize tests using Vitest, React Testing Library, and Playwright.
